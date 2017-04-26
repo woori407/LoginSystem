@@ -58,7 +58,6 @@ public class LogIn {
 //		-비밀번호 입력
 					inputPw();			//동완 : inputData 의 패스워드 값 set
 //		-비밀번호 확인
-					isValidPW = checkPw();			//기훈 : 패스워드가 맞으면 true 반환
 					if(isValidPW){
 //	1.1.1.1 비밀번호 일치
 //		-접속 시도 횟수 초기화
@@ -154,15 +153,14 @@ public class LogIn {
         	isValidPW = true;
         } else{
         	isValidPW = false;
-        	inputData.setCount(inputData.getCount()+1);
+        	increCount();
         }
     }
-	
+//	
 
 	public boolean checkCount(){return false;}
 	public void printExceptMsg(){}
 
-	public boolean checkPw(){return false;}
 	public void resetCount(){}
 	public void increCount(){}
 	public void inputMailAddr(){}
