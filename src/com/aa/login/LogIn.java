@@ -149,6 +149,7 @@ public class LogIn {
 	}
 	
 	public void checkPw(String Pw){
+		int a;
         if(Pw == inputData.getPw()){
         	isValidPW = true;
         } else{
