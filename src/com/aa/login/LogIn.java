@@ -44,7 +44,7 @@ public class LogIn {
 			if(idExist){
 //	1.1 아이디 존재
 //		-접속 시도 횟수 조회
-				isLockNeeded = checkCount();	//동완 : 리스트의 해당 아이디 count가 3 이상이면 true		
+				checkCount();	//동완 : 리스트의 해당 아이디 count가 3 이상이면 true		
 				if(isLockNeeded){
 //	1.1.2 접속 시도 횟수 3회
 //		-잠금 된 아이디 메시지 출력
@@ -73,7 +73,7 @@ public class LogIn {
 						increCount();				//현정 : 파일의 카운트 증가시키고 해당 아이디 값 파일 참조하여 리스트 업데이트
 //		-접속 시도 횟수 확인
 						isLockNeeded = false;		//같은 변수 사용중이므로 만약을 대비해 false로 초기화
-						isLockNeeded = checkCount();	//현정 : 리스트의 해당 아이디 count가 3 이상이면 true , 아니라면 false 반드시 반환
+//						isLockNeeded = checkCount();	//현정 : 리스트의 해당 아이디 count가 3 이상이면 true , 아니라면 false 반드시 반환
 						if(isLockNeeded){
 //	1.1.1.2.1 접속 시도 횟수 3회 이내
 //		-[1번으로 복귀]
@@ -112,6 +112,9 @@ public class LogIn {
 	}
 	
 	//동완
+	public void checkCount(){
+		isLockNeeded = inputData.isLocked();
+	}
 	
 	//기훈
 	public void loadMembers(){}
@@ -149,7 +152,6 @@ public class LogIn {
 	}
 	
 	public void checkPw(String Pw){
-		int a;
         if(Pw == inputData.getPw()){
         	isValidPW = true;
         } else{
@@ -159,7 +161,6 @@ public class LogIn {
     }
 
 
-	public boolean checkCount(){return false;}
 	public void printExceptMsg(){}
 
 	public void resetCount(){}
