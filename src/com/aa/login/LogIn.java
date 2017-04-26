@@ -1,10 +1,12 @@
 package com.aa.login;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Scanner;
 
 import com.aa.member.Member;
-
+@SuppressWarnings("resource")
 public class LogIn {
 	
 //	Member[] memArray;				//링크드만 사용해도 괜찮을 듯 하다.
@@ -25,7 +27,7 @@ public class LogIn {
 		isValidPW = false;
 	}
 	
-	public void process(){
+	public void process() throws IOException{
 		
 		//loadMembers();				//기훈 : 파일로부터 데이터 객체에 매핑
 		createDataStructure();		//기훈 : mList 생성 
@@ -44,7 +46,7 @@ public class LogIn {
 			if(idExist){
 //	1.1 아이디 존재
 //		-접속 시도 횟수 조회
-				isLockNeeded = checkCount();	//동완 : 리스트의 해당 아이디 count가 3 이상이면 true		
+				checkCount();	//동완 : 리스트의 해당 아이디 count가 3 이상이면 true		
 				if(isLockNeeded){
 //	1.1.2 접속 시도 횟수 3회
 //		-잠금 된 아이디 메시지 출력
@@ -73,7 +75,7 @@ public class LogIn {
 						increCount();				//현정 : 파일의 카운트 증가시키고 해당 아이디 값 파일 참조하여 리스트 업데이트
 //		-접속 시도 횟수 확인
 						isLockNeeded = false;		//같은 변수 사용중이므로 만약을 대비해 false로 초기화
-						isLockNeeded = checkCount();	//현정 : 리스트의 해당 아이디 count가 3 이상이면 true , 아니라면 false 반드시 반환
+//						isLockNeeded = checkCount();	//현정 : 리스트의 해당 아이디 count가 3 이상이면 true , 아니라면 false 반드시 반환
 						if(isLockNeeded){
 //	1.1.1.2.1 접속 시도 횟수 3회 이내
 //		-[1번으로 복귀]
@@ -112,10 +114,137 @@ public class LogIn {
 	}
 	
 	//동완
+	public void checkCount(){
+		isLockNeeded = inputData.isLocked();
+	}
 	
 	//기훈
 	public void loadMembers(){}
-	public void createDataStructure(){}
+	///////////////////////////////////createDataStructure///////////////////////////////////////////////////////////
+	public void createDataStructure() throws IOException{				//추후 예외처리 변경
+		
+		int ch;
+		int choice = 0;
+		FileInputStream fIn = new FileInputStream(".\\resources\\index.txt");
+		Member temp = new Member();
+		String token = "";
+
+		while(true){
+			ch = fIn.read();
+			if(ch == -1)
+				break;
+//			System.err.print((char)ch);
+			if(ch == '\t'){
+				setTempData(temp , token , choice++%6);
+//				System.out.println(token);
+				token="";
+			}else if(ch == '\r'){
+				continue;
+			}else if(ch == '\n'){
+				listSortedAdd (mList , temp);
+				temp = new Member();
+				continue;
+			}else{
+				token += (char)ch;
+			}
+		}
+//		for (int i = 0; i < mList.size() ; i++) {
+//			System.out.println(mList.get(i).getIdNum());
+//			System.out.println(mList.get(i).getId());
+//			System.out.println(mList.get(i).getPw());
+//			System.out.println(mList.get(i).getCount());
+//			System.out.println(mList.get(i).isLocked());
+//			
+//			if(i==0)
+//				continue;
+//			System.out.println("비교:" + isFirstBigger(mList.get(i-1).getId(), mList.get(i).getId()));
+//			System.out.println("비교:" + isFirstBigger(mList.get(i).getId(), mList.get(i-1).getId()));
+//		}
+		
+		fIn.close();
+	}
+	
+	private void setTempData(Member temp , String token , int n){
+		
+		switch(n++%6){
+		case 0:
+			temp.setIdNum(token);
+//			System.out.println(temp.getIdNum());
+			break;
+		case 1:
+			temp.setId(token);
+//			System.out.println(temp.getId());
+			break;
+		case 2:
+			temp.setPw(token);
+//			System.out.println(temp.getPw());
+			break;
+		case 3:
+			temp.setMailAddr(token);
+//			System.out.println(temp.getMailAddr());
+			break;
+		case 4:
+			temp.setCount(Integer.parseInt(token));
+//			System.out.println(temp.getCount());
+			break;
+		case 5:
+			temp.setLocked(Boolean.parseBoolean(token));
+//			System.out.println(temp.isLocked());
+			break;
+		default:
+			System.out.println("System something wrong at switch() in createDataStructure()");
+			break;
+		
+		}
+	
+	}
+	
+	private void listSortedAdd (LinkedList<Member> mList , Member temp) {
+		
+		if(mList.size() == 0){
+			mList.add(temp);
+		}else{
+			String firstStr = mList.get(0).getId();			//리스트의 첫번째 요소의 아이디
+			String newStr = temp.getId();				//새롭게 추가될 요소의 아이디
+			if(isFirstBigger(firstStr , newStr)){		//firstStr이 클 경우 temp를 가장 앞에 배치
+				mList.addFirst(temp);
+			}
+			else{
+				for (int i = 1; i < mList.size(); i++) {
+					if(isFirstBigger(mList.get(i).getId() , newStr)){
+						mList.add(i, temp);
+						return;
+					}
+				}
+				mList.addLast(temp);
+			}
+			
+		}
+		
+	}
+	public boolean isFirstBigger (String first , String second){		//true이면 first가 크고 false이면 second가 크다. 만약 같은경우라도 false
+		boolean isc = false;
+		int fLength = first.length();
+		int sLength = second.length();
+		int length;
+		
+		if(fLength < sLength) 
+			length = fLength;
+		else
+			length = sLength;
+		
+		for (int i = 0; i < length; i++) {
+			if(first.charAt(i) < second.charAt(i)){		
+				return isc;
+			}else if(first.charAt(i) > second.charAt(i)){
+				isc = true;
+				return isc;
+			}else
+				continue;
+		}
+		return isc;
+	}
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	//현정
 	
@@ -136,6 +265,8 @@ public class LogIn {
             }
         }
     }
+	
+	
 	public void inputPw(){
 		String Pw;
 		if(inputData.getCount()<3){
@@ -149,7 +280,6 @@ public class LogIn {
 	}
 	
 	public void checkPw(String Pw){
-		int a;
         if(Pw == inputData.getPw()){
         	isValidPW = true;
         } else{
@@ -158,12 +288,15 @@ public class LogIn {
         }
     }
 
-
-	public boolean checkCount(){return false;}
+	public void increCount(){
+			
+		inputData.setCount(inputData.getCount()+1);
+		
+	}
 	public void printExceptMsg(){}
 
 	public void resetCount(){}
-	public void increCount(){}
+
 	public void inputMailAddr(){}
 	public void saveMailAddr(){}
 	public void sendMail(){}
