@@ -33,6 +33,12 @@ public class LogIn {
 			inputData = new Member();		//이전 값에 영향을 받지 않기 위해 수행단위마다 새로운 인스턴스 생성
 //	1 로그인
 //		-아이디 입력
+			
+//			TODO 20170426 16:25 동완
+//			inputId()로 아이디 입력받아 메소드 내부에서 checkId()실행
+//			checkId()내에서 mList 검색해 Id일치값 찾아 inputData에 해당 member 인스턴스 삽입
+//			checkId()내부에서 일치값 찾으면 idExist=true, 못찾으면 idExist=false
+			
 			inputId();					//현정 : inputData 의 아이디 값 set
 //		-아이디 확인
 			idExist = checkId();		//현정 : 아이디가 리스트 안에 있는지 확인 있으면 true 반환
@@ -46,6 +52,10 @@ public class LogIn {
 //		-[1번으로 복귀]
 				}else{
 //	1.1.1 접속시도 횟수 3회 이내
+					
+//					TODO 20170426 04:24 동완
+//					inputPw()로 비밀번호 입력받아 그 내부에서 바로 checkPw 호출
+					
 //		-비밀번호 입력
 					inputPw();			//동완 : inputData 의 패스워드 값 set
 //		-비밀번호 확인
