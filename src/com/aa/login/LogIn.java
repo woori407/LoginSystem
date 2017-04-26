@@ -79,10 +79,11 @@ public class LogIn {
 							increCount(); //현정 : 파일의 카운트 증가시키고 해당 아이디 값 파일 참조하여 리스트 업데이트
 //									-접속 시도 횟수 확인
 							checkCount();
-							if (isLockNeeded) {
+//							isLockNeeded=true = 접속횟수 초과
+							if (!isLockNeeded) {
 //									1.1.1.2.1 접속 시도 횟수 3회 이내
 //										-[1번으로 복귀]
-								break;
+								continue;
 							} else {
 //									1.1.1.2.2 접속 시도 횟수 3회
 //										-아이디 잠금
@@ -96,11 +97,12 @@ public class LogIn {
 //										-메일 발송(attached: confirm url)
 								sendMail(); // 구현하지 않음
 //										-[1번으로 복귀]
-								continue;
+								break;
 							}
 						} 
 					}
 					if(isValidPW){
+//						비밀번호 일치로 while break됐을 경우 성공
 						break;
 					}
 				}
