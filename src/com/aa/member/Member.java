@@ -45,11 +45,5 @@ public class Member {
 	public void setCount(int count) {
 		this.count = count;
 	}
-	public int getIdVal() {
-		return idVal;
-	}
-	public void setIdVal(int idVal) {
-		this.idVal = idVal;
-	}
 
 }
