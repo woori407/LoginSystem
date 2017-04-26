@@ -5,6 +5,7 @@ import java.util.Scanner;
 import com.aa.main.Login;
 
 public class LoginMain {
+	@SuppressWarnings("resource")
 	public static void main(String[] args) {
 			
 			Login log = new Login();

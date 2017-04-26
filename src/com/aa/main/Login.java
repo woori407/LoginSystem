@@ -34,6 +34,10 @@ public class Login {
 		public void setPassword(String password) {
 			this.password = password;
 		}
+		public void chkPassword(String password){
+			String pwd = getPassword();
+//			if()
+		}
 	}
 
 
