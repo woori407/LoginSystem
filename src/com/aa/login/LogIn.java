@@ -46,64 +46,55 @@ public class LogIn {
 			if(idExist){
 //	1.1 아이디 존재
 //		-접속 시도 횟수 조회
-				checkCount();	//동완 : 리스트의 해당 아이디 count가 3 이상이면 isLockNeeded=true		
+				checkCount();	//동완 : 리스트의 해당 아이디 count가 3 이상이면 true		
 				if(isLockNeeded){
 //	1.1.2 접속 시도 횟수 3회
 //		-잠금 된 아이디 메시지 출력
-					System.out.println("id locked");
 //		-[1번으로 복귀]
-					continue;
 				}else{
 //	1.1.1 접속시도 횟수 3회 이내
 					
 //					TODO 20170426 04:24 동완
 //					inputPw()로 비밀번호 입력받아 그 내부에서 바로 checkPw 호출
-//					비밀번호 불일치시 반복
 					
-					while (true) {
-//								-비밀번호 입력
-						inputPw(); //현정 : inputData 의 패스워드 값 set
-//								-비밀번호 확인
-						if (isValidPW) {
-//								1.1.1.1 비밀번호 일치
-//									-접속 시도 횟수 초기화
-							resetCount(); //기훈 : 파일의 해당 아이디의 카운트 값 리셋하고 해당 아이디 값  파일참조하여 리스트 업데이트
-//									-[로그인 성공]
-							System.out.println("log-in successfully");
-							break;
-						} else {
-//								1.1.1.2 비밀번호 불일치
-//									-비밀번호 불일치 예외 메세지
-							System.out.println("wrong password");
-//									-해당 아이디 접속 시도 횟수 증가
-							increCount(); //현정 : 파일의 카운트 증가시키고 해당 아이디 값 파일 참조하여 리스트 업데이트
-//									-접속 시도 횟수 확인
-							checkCount();
-//							isLockNeeded=true = 접속횟수 초과
-							if (!isLockNeeded) {
-//									1.1.1.2.1 접속 시도 횟수 3회 이내
-//										-[1번으로 복귀]
-								continue;
-							} else {
-//									1.1.1.2.2 접속 시도 횟수 3회
-//										-아이디 잠금
-								lockDown();
-//										-잠금 메시지 출력
-								System.out.println("id locked");
-//										-메일 주소 입력
-								inputMailAddr();
-//										-메일 주소 저장
-								saveMailAddr(); // 메일 주소를 파일에 쓰고 리스트 업데이트
-//										-메일 발송(attached: confirm url)
-								sendMail(); // 구현하지 않음
-//										-[1번으로 복귀]
-								break;
-							}
-						} 
-					}
+//		-비밀번호 입력
+					inputPw();			//현정 : inputData 의 패스워드 값 set
+//		-비밀번호 확인
 					if(isValidPW){
-//						비밀번호 일치로 while break됐을 경우 성공
+//	1.1.1.1 비밀번호 일치
+//		-접속 시도 횟수 초기화
+						resetCount();				//기훈 : 파일의 해당 아이디의 카운트 값 리셋하고 해당 아이디 값  파일참조하여 리스트 업데이트
+//		-[로그인 성공]
+						System.out.println("log-in successfully");
 						break;
+					} else {
+//	1.1.1.2 비밀번호 불일치
+//		-비밀번호 불일치 예외 메세지
+						System.out.println("wrong password");
+//		-해당 아이디 접속 시도 횟수 증가
+						increCount();				//현정 : 파일의 카운트 증가시키고 해당 아이디 값 파일 참조하여 리스트 업데이트
+//		-접속 시도 횟수 확인
+						isLockNeeded = false;		//같은 변수 사용중이므로 만약을 대비해 false로 초기화
+//						isLockNeeded = checkCount();	//현정 : 리스트의 해당 아이디 count가 3 이상이면 true , 아니라면 false 반드시 반환
+						if(isLockNeeded){
+//	1.1.1.2.1 접속 시도 횟수 3회 이내
+//		-[1번으로 복귀]
+							continue;
+						}else{
+//	1.1.1.2.2 접속 시도 횟수 3회
+//		-아이디 잠금
+							lockDown();
+//		-잠금 메시지 출력
+							System.out.println("id locked");
+//		-메일 주소 입력
+							inputMailAddr();
+//		-메일 주소 저장
+							saveMailAddr();			// 메일 주소를 파일에 쓰고 리스트 업데이트
+//		-메일 발송(attached: confirm url)
+							sendMail();				// 구현하지 않음
+//		-[1번으로 복귀]
+							continue;
+						}
 					}
 				}
 			} else {
@@ -134,6 +125,7 @@ public class LogIn {
 		inputData.setLocked(true);
 	}
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
 	
 	//기훈
 	public void loadMembers(){}
