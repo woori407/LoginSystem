@@ -1,10 +1,12 @@
 package com.aa.login;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Scanner;
 
 import com.aa.member.Member;
-
+@SuppressWarnings("resource")
 public class LogIn {
 	
 //	Member[] memArray;				//링크드만 사용해도 괜찮을 듯 하다.
@@ -25,7 +27,7 @@ public class LogIn {
 		isValidPW = false;
 	}
 	
-	public void process(){
+	public void process() throws IOException{
 		
 		//loadMembers();				//기훈 : 파일로부터 데이터 객체에 매핑
 		createDataStructure();		//기훈 : mList 생성 
@@ -56,9 +58,8 @@ public class LogIn {
 //					inputPw()로 비밀번호 입력받아 그 내부에서 바로 checkPw 호출
 					
 //		-비밀번호 입력
-					inputPw();			//동완 : inputData 의 패스워드 값 set
+					inputPw();			//현정 : inputData 의 패스워드 값 set
 //		-비밀번호 확인
-					isValidPW = checkPw();			//기훈 : 패스워드가 맞으면 true 반환
 					if(isValidPW){
 //	1.1.1.1 비밀번호 일치
 //		-접속 시도 횟수 초기화
@@ -116,7 +117,74 @@ public class LogIn {
 	
 	//기훈
 	public void loadMembers(){}
-	public void createDataStructure(){}
+	///////////////////////////////////createDataStructure///////////////////////////////////////////////////////////
+	public void createDataStructure() throws IOException{				//추후 예외처리 변경
+		
+		int ch;
+		int choice = 0;
+		FileInputStream fIn = new FileInputStream(".\\resources\\index.txt");
+		Member temp = new Member();
+		String token = "";
+
+		while(true){
+			ch = fIn.read();
+			if(ch == -1)
+				break;
+//			System.err.print((char)ch);
+			if(ch == '\t'){
+				switch(choice++%6){
+				case 0:
+					temp.setIdNum(token);
+//					System.out.println(temp.getIdNum());
+					break;
+				case 1:
+					temp.setId(token);
+//					System.out.println(temp.getId());
+					break;
+				case 2:
+					temp.setPw(token);
+//					System.out.println(temp.getPw());
+					break;
+				case 3:
+					temp.setMailAddr(token);
+//					System.out.println(temp.getMailAddr());
+					break;
+				case 4:
+					temp.setCount(Integer.parseInt(token));
+//					System.out.println(temp.getCount());
+					break;
+				case 5:
+					temp.setLocked(Boolean.parseBoolean(token));
+//					System.out.println(temp.isLocked());
+					break;
+				default:
+					System.out.println("System something wrong at switch() in createDataStructure()");
+					break;
+				
+				}
+//				System.out.println(token);
+				token="";
+			}else if(ch == '\r'){
+				continue;
+			}else if(ch == '\n'){
+				mList.add(temp);
+				temp = new Member();
+				continue;
+			}else{
+				token += (char)ch;
+			}
+		}
+//		for (int i = 0; i < mList.size() ; i++) {
+//			System.out.println(mList.get(i).getIdNum());
+//			System.out.println(mList.get(i).getId());
+//			System.out.println(mList.get(i).getPw());
+//			System.out.println(mList.get(i).getCount());
+//			System.out.println(mList.get(i).isLocked());
+//		}
+		
+		fIn.close();
+	}
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	//현정
 	
@@ -137,10 +205,32 @@ public class LogIn {
             }
         }
     }
+	public void inputPw(){
+		String Pw;
+		if(inputData.getCount()<3){
+			System.out.println("비밀번호 입력 :");
+			Scanner scan = new Scanner(System.in);
+			Pw = scan.next();
+			checkPw(Pw);
+		} else {
+			lockDown();
+		}
+	}
+	
+	public void checkPw(String Pw){
+		int a;
+        if(Pw == inputData.getPw()){
+        	isValidPW = true;
+        } else{
+        	isValidPW = false;
+        	increCount();
+        }
+    }
+
+
 	public boolean checkCount(){return false;}
 	public void printExceptMsg(){}
-	public void inputPw(){}
-	public boolean checkPw(){return false;}
+
 	public void resetCount(){}
 	public void increCount(){}
 	public void inputMailAddr(){}
