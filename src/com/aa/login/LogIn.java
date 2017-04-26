@@ -57,6 +57,7 @@ public class LogIn {
 					
 //		-비밀번호 입력
 					inputPw();			//동완 : inputData 의 패스워드 값 set
+//		-비밀번호 확인
 					if(isValidPW){
 //	1.1.1.1 비밀번호 일치
 //		-접속 시도 횟수 초기화
