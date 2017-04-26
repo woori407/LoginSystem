@@ -56,7 +56,7 @@ public class LogIn {
 //					inputPw()로 비밀번호 입력받아 그 내부에서 바로 checkPw 호출
 					
 //		-비밀번호 입력
-					inputPw();			//동완 : inputData 의 패스워드 값 set
+					inputPw();			//현정 : inputData 의 패스워드 값 set
 //		-비밀번호 확인
 					if(isValidPW){
 //	1.1.1.1 비밀번호 일치
@@ -156,7 +156,7 @@ public class LogIn {
         	increCount();
         }
     }
-//	
+
 
 	public boolean checkCount(){return false;}
 	public void printExceptMsg(){}
