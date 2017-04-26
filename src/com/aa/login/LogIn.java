@@ -137,9 +137,31 @@ public class LogIn {
             }
         }
     }
+	public void inputPw(){
+		String Pw;
+		if(inputData.getCount()<3){
+			System.out.println("비밀번호 입력 :");
+			Scanner scan = new Scanner(System.in);
+			Pw = scan.next();
+			checkPw(Pw);
+		} else {
+			lockDown();
+		}
+	}
+	
+	public void checkPw(String Pw){
+        if(Pw == inputData.getPw()){
+        	isValidPW = true;
+        } else{
+        	isValidPW = false;
+        	inputData.setCount(inputData.getCount()+1);
+        }
+    }
+	
+
 	public boolean checkCount(){return false;}
 	public void printExceptMsg(){}
-	public void inputPw(){}
+
 	public boolean checkPw(){return false;}
 	public void resetCount(){}
 	public void increCount(){}
