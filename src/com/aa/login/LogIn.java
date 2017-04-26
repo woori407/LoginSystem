@@ -1,6 +1,7 @@
 package com.aa.login;
 
 import java.util.LinkedList;
+import java.util.Scanner;
 
 import com.aa.member.Member;
 
@@ -40,8 +41,6 @@ public class LogIn {
 //			checkId()내부에서 일치값 찾으면 idExist=true, 못찾으면 idExist=false
 			
 			inputId();					//현정 : inputData 의 아이디 값 set
-//		-아이디 확인
-			idExist = checkId();		//현정 : 아이디가 리스트 안에 있는지 확인 있으면 true 반환
 			if(idExist){
 //	1.1 아이디 존재
 //		-접속 시도 횟수 조회
@@ -121,8 +120,23 @@ public class LogIn {
 	
 	//현정
 	
-	public void inputId(){}
-	public boolean checkId(){return false;}
+	public void inputId(){
+		String id;
+		System.out.println("아이디 입력:");
+		Scanner scan = new Scanner(System.in);
+		id = scan.next();
+		checkId(id);
+	}
+	
+	public void checkId(String id){
+        for(int i=0; i<mList.size();i++){
+            if(mList.get(i).getId() == id){
+            	inputData = mList.get(i);
+            	idExist=true;
+            	break;
+            }
+        }
+    }
 	public boolean checkCount(){return false;}
 	public void printExceptMsg(){}
 	public void inputPw(){}
