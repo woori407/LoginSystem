@@ -20,7 +20,7 @@ public class LogIn {
 	//1.회원번호	2.id	3.pw	4.mailAddr	5.count	6.locked
 	LinkedList<Member> mList;			//전체 회원
 	
-	LogIn(){
+	public LogIn(){
 		mList = new LinkedList<Member>();
 		idExist = false;
 		isLockNeeded = false;
