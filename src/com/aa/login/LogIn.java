@@ -132,42 +132,13 @@ public class LogIn {
 				break;
 //			System.err.print((char)ch);
 			if(ch == '\t'){
-				switch(choice++%6){
-				case 0:
-					temp.setIdNum(token);
-//					System.out.println(temp.getIdNum());
-					break;
-				case 1:
-					temp.setId(token);
-//					System.out.println(temp.getId());
-					break;
-				case 2:
-					temp.setPw(token);
-//					System.out.println(temp.getPw());
-					break;
-				case 3:
-					temp.setMailAddr(token);
-//					System.out.println(temp.getMailAddr());
-					break;
-				case 4:
-					temp.setCount(Integer.parseInt(token));
-//					System.out.println(temp.getCount());
-					break;
-				case 5:
-					temp.setLocked(Boolean.parseBoolean(token));
-//					System.out.println(temp.isLocked());
-					break;
-				default:
-					System.out.println("System something wrong at switch() in createDataStructure()");
-					break;
-				
-				}
+				setTempData(temp , token , choice++%6);
 //				System.out.println(token);
 				token="";
 			}else if(ch == '\r'){
 				continue;
 			}else if(ch == '\n'){
-				mList.add(temp);
+				listSortedAdd (mList , temp);
 				temp = new Member();
 				continue;
 			}else{
@@ -180,9 +151,95 @@ public class LogIn {
 //			System.out.println(mList.get(i).getPw());
 //			System.out.println(mList.get(i).getCount());
 //			System.out.println(mList.get(i).isLocked());
+//			
+//			if(i==0)
+//				continue;
+//			System.out.println("비교:" + isFirstBigger(mList.get(i-1).getId(), mList.get(i).getId()));
+//			System.out.println("비교:" + isFirstBigger(mList.get(i).getId(), mList.get(i-1).getId()));
 //		}
 		
 		fIn.close();
+	}
+	
+	private void setTempData(Member temp , String token , int n){
+		
+		switch(n++%6){
+		case 0:
+			temp.setIdNum(token);
+//			System.out.println(temp.getIdNum());
+			break;
+		case 1:
+			temp.setId(token);
+//			System.out.println(temp.getId());
+			break;
+		case 2:
+			temp.setPw(token);
+//			System.out.println(temp.getPw());
+			break;
+		case 3:
+			temp.setMailAddr(token);
+//			System.out.println(temp.getMailAddr());
+			break;
+		case 4:
+			temp.setCount(Integer.parseInt(token));
+//			System.out.println(temp.getCount());
+			break;
+		case 5:
+			temp.setLocked(Boolean.parseBoolean(token));
+//			System.out.println(temp.isLocked());
+			break;
+		default:
+			System.out.println("System something wrong at switch() in createDataStructure()");
+			break;
+		
+		}
+	
+	}
+	
+	private void listSortedAdd (LinkedList<Member> mList , Member temp) {
+		
+		if(mList.size() == 0){
+			mList.add(temp);
+		}else{
+			String firstStr = mList.get(0).getId();			//리스트의 첫번째 요소의 아이디
+			String newStr = temp.getId();				//새롭게 추가될 요소의 아이디
+			if(isFirstBigger(firstStr , newStr)){		//firstStr이 클 경우 temp를 가장 앞에 배치
+				mList.addFirst(temp);
+			}
+			else{
+				for (int i = 1; i < mList.size(); i++) {
+					if(isFirstBigger(mList.get(i).getId() , newStr)){
+						mList.add(i, temp);
+						return;
+					}
+				}
+				mList.addLast(temp);
+			}
+			
+		}
+		
+	}
+	public boolean isFirstBigger (String first , String second){		//true이면 first가 크고 false이면 second가 크다. 만약 같은경우라도 false
+		boolean isc = false;
+		int fLength = first.length();
+		int sLength = second.length();
+		int length;
+		
+		if(fLength < sLength) 
+			length = fLength;
+		else
+			length = sLength;
+		
+		for (int i = 0; i < length; i++) {
+			if(first.charAt(i) < second.charAt(i)){		
+				return isc;
+			}else if(first.charAt(i) > second.charAt(i)){
+				isc = true;
+				return isc;
+			}else
+				continue;
+		}
+		return isc;
 	}
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
