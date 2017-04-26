@@ -7,7 +7,6 @@ public class Member {
 	String pw;
 	String mailAddr;
 	int count;
-	int idVal;
 	boolean locked;				//true = 열림 false = 잠김
 	
 	public boolean isLocked() {
