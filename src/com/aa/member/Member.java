@@ -7,7 +7,6 @@ public class Member {
 	String pw;
 	String mailAddr;
 	int count;
-	int idVal;
 	boolean locked;				//true = 열림 false = 잠김
 	
 	public boolean isLocked() {
@@ -45,12 +44,6 @@ public class Member {
 	}
 	public void setCount(int count) {
 		this.count = count;
-	}
-	public int getIdVal() {
-		return idVal;
-	}
-	public void setIdVal(int idVal) {
-		this.idVal = idVal;
 	}
 
 }
