@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Scanner;
 
+import com.aa.io.Input;
 import com.aa.member.Member;
 @SuppressWarnings("resource")
 public class LogIn {
@@ -127,12 +128,11 @@ public class LogIn {
 	public void inputMailAddr(){
 		String email="";
 		String verify = "";
-		Scanner scan = new Scanner(System.in);
+		Input input = Input.getInstance();
 		while (true) {
-			System.out.println("이메일 입력");
-			email = scan.nextLine().trim();
-			System.out.println("이메일 확인");
-			verify = scan.nextLine().trim();
+			email = input.inputEmail();
+			System.out.printf("재확인 : ");
+			verify = input.inputEmail();
 			if (0==email.compareTo(verify)){
 				saveMailAddr(email);
 				break;
@@ -142,7 +142,6 @@ public class LogIn {
 				continue;
 			}
 		}
-		scan.close();
 	}
 	
 	public void saveMailAddr(String email){
@@ -286,9 +285,8 @@ public class LogIn {
 	
 	public void inputId(){
 		String id;
-		System.out.println("아이디 입력:");
-		Scanner scan = new Scanner(System.in);
-		id = scan.next();
+		Input input = Input.getInstance();
+		id = input.inputId();
 		checkId(id);
 	}
 	
@@ -306,9 +304,8 @@ public class LogIn {
 	public void inputPw(){
 		String Pw;
 		if(inputData.getCount()<3){
-			System.out.println("비밀번호 입력 :");
-			Scanner scan = new Scanner(System.in);
-			Pw = scan.next();
+			Input input = Input.getInstance();
+			Pw = input.inputPassword();
 			checkPw(Pw);
 		} else {
 			lockDown();
