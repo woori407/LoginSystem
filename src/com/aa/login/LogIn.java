@@ -1,10 +1,9 @@
 package com.aa.login;
 
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Scanner;
 
+import com.aa.fileio.FileIO;
 import com.aa.member.Member;
 @SuppressWarnings("resource")
 public class LogIn {
@@ -14,6 +13,7 @@ public class LogIn {
 	boolean idExist;				//아이디가 존재하는지 확인
 	boolean isLockNeeded;			//count가 3이상이면 true
 	boolean isValidPW;				//패스워드가 맞으면 true
+	String fileStr;					//파일내용
 	
 	//idVal 값을 이용해서 정렬시키고 검색해주는 데이터 스트럭쳐
 	//파일 데이터
@@ -27,10 +27,12 @@ public class LogIn {
 		isValidPW = false;
 	}
 	
-	public void process() throws IOException{
+	public void process() {
 		
-		//loadMembers();				//기훈 : 파일로부터 데이터 객체에 매핑
-		createDataStructure();		//기훈 : mList 생성 
+		FileIO fIO = new FileIO();
+		fileStr = fIO.getInitStr();
+		
+		createDataStructure(fileStr);
 		
 		while(true){
 			inputData = new Member();		//이전 값에 영향을 받지 않기 위해 수행단위마다 새로운 인스턴스 생성
@@ -130,22 +132,25 @@ public class LogIn {
 	//기훈
 	public void loadMembers(){}
 	///////////////////////////////////createDataStructure///////////////////////////////////////////////////////////
-	public void createDataStructure() throws IOException{				//추후 예외처리 변경
+	public void createDataStructure(String fileStr) {				//추후 예외처리 변경
 		
 		int ch;
 		int choice = 0;
-		FileInputStream fIn = new FileInputStream(".\\resources\\index.txt");
+//			FileInputStream fIn = new FileInputStream(".\\resources\\index.txt");
+		
 		Member temp = new Member();
 		String token = "";
-
-		while(true){
-			ch = fIn.read();
-			if(ch == -1)
-				break;
-//			System.err.print((char)ch);
+		int i = 0;
+		
+//			while(true){
+		for (int j = 0; j < fileStr.length(); j++) {
+			ch = fileStr.charAt(i++);
+//				if(ch == -1)
+//					break;
+//				System.err.print((char)ch);
 			if(ch == '\t'){
 				setTempData(temp , token , choice++%6);
-//				System.out.println(token);
+//					System.out.println(token);
 				token="";
 			}else if(ch == '\r'){
 				continue;
@@ -157,20 +162,7 @@ public class LogIn {
 				token += (char)ch;
 			}
 		}
-//		for (int i = 0; i < mList.size() ; i++) {
-//			System.out.println(mList.get(i).getIdNum());
-//			System.out.println(mList.get(i).getId());
-//			System.out.println(mList.get(i).getPw());
-//			System.out.println(mList.get(i).getCount());
-//			System.out.println(mList.get(i).isLocked());
-//			
-//			if(i==0)
-//				continue;
-//			System.out.println("비교:" + isFirstBigger(mList.get(i-1).getId(), mList.get(i).getId()));
-//			System.out.println("비교:" + isFirstBigger(mList.get(i).getId(), mList.get(i-1).getId()));
-//		}
 		
-		fIn.close();
 	}
 	
 	private void setTempData(Member temp , String token , int n){
@@ -178,27 +170,27 @@ public class LogIn {
 		switch(n++%6){
 		case 0:
 			temp.setIdNum(token);
-//			System.out.println(temp.getIdNum());
+//				System.out.println(temp.getIdNum());
 			break;
 		case 1:
 			temp.setId(token);
-//			System.out.println(temp.getId());
+//				System.out.println(temp.getId());
 			break;
 		case 2:
 			temp.setPw(token);
-//			System.out.println(temp.getPw());
+//				System.out.println(temp.getPw());
 			break;
 		case 3:
 			temp.setMailAddr(token);
-//			System.out.println(temp.getMailAddr());
+//				System.out.println(temp.getMailAddr());
 			break;
 		case 4:
 			temp.setCount(Integer.parseInt(token));
-//			System.out.println(temp.getCount());
+//				System.out.println(temp.getCount());
 			break;
 		case 5:
 			temp.setLocked(Boolean.parseBoolean(token));
-//			System.out.println(temp.isLocked());
+//				System.out.println(temp.isLocked());
 			break;
 		default:
 			System.out.println("System something wrong at switch() in createDataStructure()");
@@ -253,7 +245,7 @@ public class LogIn {
 		}
 		return isc;
 	}
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	//현정
 	
