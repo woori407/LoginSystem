@@ -124,6 +124,29 @@ public class LogIn {
 	public void lockDown(){
 		inputData.setLocked(true);
 	}
+	
+	public void inputMailAddr(){
+		String email="";
+		String verify = "";
+		Scanner scan = new Scanner(System.in);
+		while (true) {
+			System.out.println("이메일 입력");
+			email = scan.nextLine().trim();
+			System.out.println("이메일 확인");
+			verify = scan.nextLine().trim();
+			if (0==email.compareTo(verify)){
+				saveMailAddr();
+				break;
+			}
+			else
+				continue;
+		}
+		scan.close();
+	}
+	
+	public void saveMailAddr(){
+		
+	}
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	
@@ -306,8 +329,6 @@ public class LogIn {
 
 	public void resetCount(){}
 
-	public void inputMailAddr(){}
-	public void saveMailAddr(){}
 	public void sendMail(){}
 	public void listUpdate(){}
 	
