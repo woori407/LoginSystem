@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Scanner;
 
+import com.aa.fileio.FileIO;
 import com.aa.io.Input;
 import com.aa.member.Member;
 @SuppressWarnings("resource")
