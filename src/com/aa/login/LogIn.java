@@ -153,6 +153,34 @@ public class LogIn {
 	public void resetCount(){
 		inputData.setCount(0);
 	}
+	
+	public void inputMailAddr(){
+		String email="";
+		String verify = "";
+		Scanner scan = new Scanner(System.in);
+		while (true) {
+			System.out.println("이메일 입력");
+			email = scan.nextLine().trim();
+			System.out.println("이메일 확인");
+			verify = scan.nextLine().trim();
+			if (0==email.compareTo(verify)){
+				saveMailAddr(email);
+				break;
+			}
+			else{
+				System.out.println("메일 주소가 일치하지 않습니다. 다시 입력해주세요");
+				continue;
+			}
+		}
+		scan.close();
+	}
+	
+	public void saveMailAddr(String email){
+		inputData.setMailAddr(email);
+	}
+	public void resetCount(){
+		inputData.setCount(0);
+	}
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	
