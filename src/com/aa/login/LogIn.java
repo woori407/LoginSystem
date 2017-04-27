@@ -115,7 +115,7 @@ public class LogIn {
 	//동완
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public void checkCount(){
-		if(inputData.isLocked()||inputData.getCount()>=3){
+		if(inputData.getCount()>=3){
 			lockDown();
 			isLockNeeded = true;
 		}
@@ -327,6 +327,7 @@ public class LogIn {
 	public void increCount(){
 			
 		inputData.setCount(inputData.getCount()+1);
+		checkCount();
 		
 	}
 	public void printExceptMsg(){}
