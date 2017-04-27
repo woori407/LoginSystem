@@ -291,7 +291,6 @@ public class LogIn {
 	public void increCount(){
 			
 		inputData.setCount(inputData.getCount()+1);
-		
 	}
 	public void printExceptMsg(){}
 
