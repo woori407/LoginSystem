@@ -89,9 +89,8 @@ public class LogIn {
 //		-잠금 메시지 출력
 							System.out.println("id locked");
 //		-메일 주소 입력
+//		-메일 주소 저장을 메소드 내에서 수행
 							inputMailAddr();
-//		-메일 주소 저장
-							saveMailAddr();			// 메일 주소를 파일에 쓰고 리스트 업데이트
 //		-메일 발송(attached: confirm url)
 							sendMail();				// 구현하지 않음
 //		-[1번으로 복귀]
@@ -118,13 +117,41 @@ public class LogIn {
 	//동완
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public void checkCount(){
-		if(inputData.isLocked()||inputData.getCount()>=3){
+		if(inputData.getCount()>=3){
 			lockDown();
 			isLockNeeded = true;
 		}
 	}
 	public void lockDown(){
 		inputData.setLocked(true);
+	}
+	
+	public void inputMailAddr(){
+		String email="";
+		String verify = "";
+		Scanner scan = new Scanner(System.in);
+		while (true) {
+			System.out.println("이메일 입력");
+			email = scan.nextLine().trim();
+			System.out.println("이메일 확인");
+			verify = scan.nextLine().trim();
+			if (0==email.compareTo(verify)){
+				saveMailAddr(email);
+				break;
+			}
+			else{
+				System.out.println("메일 주소가 일치하지 않습니다. 다시 입력해주세요");
+				continue;
+			}
+		}
+		scan.close();
+	}
+	
+	public void saveMailAddr(String email){
+		inputData.setMailAddr(email);
+	}
+	public void resetCount(){
+		inputData.setCount(0);
 	}
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
@@ -292,14 +319,11 @@ public class LogIn {
 	public void increCount(){
 			
 		inputData.setCount(inputData.getCount()+1);
+		checkCount();
 		
 	}
 	public void printExceptMsg(){}
 
-	public void resetCount(){}
-
-	public void inputMailAddr(){}
-	public void saveMailAddr(){}
 	public void sendMail(){}
 	public void listUpdate(){}
 	
