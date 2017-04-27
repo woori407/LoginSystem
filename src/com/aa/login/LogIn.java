@@ -1,12 +1,10 @@
 package com.aa.login;
 
 import java.util.LinkedList;
-import java.util.Scanner;
 
 import com.aa.fileio.FileIO;
 import com.aa.io.Input;
 import com.aa.member.Member;
-@SuppressWarnings("resource")
 public class LogIn {
    
 //   Member[] memArray;            //링크드만 사용해도 괜찮을 듯 하다.
@@ -34,7 +32,6 @@ public class LogIn {
       fileStr = fIO.getInitStr();
       
       createDataStructure(fileStr);
-      
       while(true){
          inputData = new Member();      //이전 값에 영향을 받지 않기 위해 수행단위마다 새로운 인스턴스 생성
 //   1 로그인
@@ -53,6 +50,7 @@ public class LogIn {
             if(isLockNeeded){
 //   1.1.2 접속 시도 횟수 3회
 //      -잠금 된 아이디 메시지 출력
+            	System.out.println("ID locked");
 //      -[1번으로 복귀]
             }else{
 //   1.1.1 접속시도 횟수 3회 이내
@@ -105,11 +103,11 @@ public class LogIn {
             				tmp.setMailAddr(inputData.getMailAddr());
 //            				filestr <- mList
             				findAndSaveStr();
-            				System.out.println(fileStr);
             			      fIO.writeLastStr(fileStr);
             				break;
             			}
             		}
+                     System.out.println();
                      continue;
                   }
                }
@@ -133,9 +131,11 @@ public class LogIn {
    //동완
    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
    public void checkCount(){
-      if(inputData.getCount()>=3){
-         lockDown();
-         isLockNeeded = true;
+      if(inputData.getCount()<3){
+         isLockNeeded = false;
+      } else{
+          lockDown();
+          isLockNeeded = true;
       }
    }
    public void lockDown(){
@@ -193,9 +193,9 @@ public class LogIn {
             setTempData(temp , token , choice++%6);
 //               System.out.println(token);
             token="";
-         }else if(ch == '\r'){
-            continue;
-         }else if(ch == '\n'){
+//         }else if(ch == '\r'){
+//            continue;
+         }else if(ch == ':'){
             listSortedAdd (mList , temp);
             temp = new Member();
             continue;
@@ -290,7 +290,7 @@ public class LogIn {
    public void findAndSaveStr(){
       
       String [] aStr = null;
-      aStr = fileStr.split("\n");
+      aStr = fileStr.split(":");
       
       int row = Integer.parseInt(inputData.getIdNum()) - 100000;
       
@@ -309,15 +309,15 @@ public class LogIn {
          aStr[row] += "1";
       else
          aStr[row] += "0";
-      aStr[row] +="\t" + '\r' + '\n';
+//      aStr[row] +=":";
       
       fileStr = "";
       
       for (int i = 0; i < aStr.length; i++) {
-         fileStr += aStr[i];
+         fileStr += aStr[i] + ":";
+//    	  System.out.println(aStr[i]);
       }
       
-      System.out.println(fileStr);
    }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
    
@@ -357,7 +357,6 @@ public class LogIn {
            isValidPW = true;
         } else{
            isValidPW = false;
-           increCount();
         }
     }
 
