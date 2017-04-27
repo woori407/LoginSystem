@@ -24,25 +24,27 @@ public class Input {
 
 	public String inputPassword() {
 		String tmp = "";
-		while (true) {
-			try {
-				cnsl = System.console();
-				if (cnsl != null) {
-					char[] pwd = cnsl.readPassword("패스워드를 입력하세요 : ");
-					for (int i = 0; i < pwd.length; i++) {
-						tmp = tmp+pwd[i];
-					}
-					break;
-				}
-				else{
-					System.out.println("패스워드 입력 메소드 오류");
-					break;
-				}
-			} catch (Exception e) {
-				System.out.println("다시 시도하세요");
-				e.printStackTrace();
-			} 
-		}
+//		while (true) {
+//			try {
+//				cnsl = System.console();
+//				if (cnsl != null) {
+//					char[] pwd = cnsl.readPassword("패스워드를 입력하세요 : ");
+//					for (int i = 0; i < pwd.length; i++) {
+//						tmp = tmp+pwd[i];
+//					}
+//					break;
+//				}
+//				else{
+//					System.out.println("패스워드 입력 메소드 오류");
+//					break;
+//				}
+//			} catch (Exception e) {
+//				System.out.println("다시 시도하세요");
+//				e.printStackTrace();
+//			} 
+//		}
+		System.out.printf("비밀번호를 입력하세요 : ");
+		tmp = sc.nextLine();
 		return tmp.trim();
 	}
 

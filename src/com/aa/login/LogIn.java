@@ -49,7 +49,7 @@ public class LogIn {
          if(idExist){
 //   1.1 아이디 존재
 //      -접속 시도 횟수 조회
-            checkCount();   //동완 : 리스트의 해당 아이디 count가 3 이상이면 true      
+            checkCount();   //동완 : 리스트의 해당 아이디 count가 3 이상이면 lockDown(), isLockNeeded;     
             if(isLockNeeded){
 //   1.1.2 접속 시도 횟수 3회
 //      -잠금 된 아이디 메시지 출력
@@ -95,6 +95,21 @@ public class LogIn {
 //      -메일 발송(attached: confirm url)
                      sendMail();            // 구현하지 않음
 //      -[1번으로 복귀]
+                     String id = inputData.getId();
+                     for (int i = 0; i < mList.size(); i++) {
+                    	 Member tmp = mList.get(i);
+            			if(tmp.getId().compareTo(id)==0){
+//            				mList <- inputData
+            				tmp.setCount(inputData.getCount());
+            				tmp.setLocked(inputData.isLocked());
+            				tmp.setMailAddr(inputData.getMailAddr());
+//            				filestr <- mList
+            				findAndSaveStr();
+            				System.out.println(fileStr);
+            			      fIO.writeLastStr(fileStr);
+            				break;
+            			}
+            		}
                      continue;
                   }
                }
@@ -106,18 +121,7 @@ public class LogIn {
 //      -[1번으로 복귀]
             continue;
          }
-         String id = inputData.getId();
-         for (int i = 0; i < mList.size(); i++) {
-        	 Member tmp = mList.get(i);
-			if(tmp.getId().compareTo(id)==0){
-				tmp.setCount(inputData.getCount());
-				tmp.setLocked(inputData.isLocked());
-				tmp.setMailAddr(inputData.getMailAddr());
-				break;
-			}
-		}
       }
-      fIO.writeLastStr(fileStr);
 
 //   2 사후처리
 //      -confirm url 방문
@@ -282,6 +286,39 @@ public class LogIn {
       }
       return isc;
    }
+   
+   public void findAndSaveStr(){
+      
+      String [] aStr = null;
+      aStr = fileStr.split("\n");
+      
+      int row = Integer.parseInt(inputData.getIdNum()) - 100000;
+      
+      aStr[row] = "";
+      aStr[row] += inputData.getIdNum();
+      aStr[row] +='\t';   
+      aStr[row] += inputData.getId();
+      aStr[row] +='\t';
+      aStr[row] += inputData.getPw();
+      aStr[row] +='\t';
+      aStr[row] += inputData.getMailAddr();
+      aStr[row] +='\t';
+      aStr[row] += inputData.getCount();
+      aStr[row] +='\t';
+      if(inputData.isLocked())
+         aStr[row] += "1";
+      else
+         aStr[row] += "0";
+      aStr[row] +="\t" + '\r' + '\n';
+      
+      fileStr = "";
+      
+      for (int i = 0; i < aStr.length; i++) {
+         fileStr += aStr[i];
+      }
+      
+      System.out.println(fileStr);
+   }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
    
    //현정
@@ -295,7 +332,7 @@ public class LogIn {
    
    public void checkId(String id){
         for(int i=0; i<mList.size();i++){
-            if(mList.get(i).getId() == id){
+            if(mList.get(i).getId().compareTo(id)==0){
                inputData = mList.get(i);
                idExist=true;
                break;
@@ -316,7 +353,7 @@ public class LogIn {
    }
    
    public void checkPw(String Pw){
-        if(Pw == inputData.getPw()){
+        if(inputData.getPw().compareTo(Pw)==0){
            isValidPW = true;
         } else{
            isValidPW = false;
