@@ -148,6 +148,9 @@ public class LogIn {
 	public void saveMailAddr(String email){
 		inputData.setMailAddr(email);
 	}
+	public void resetCount(){
+		inputData.setCount(0);
+	}
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	
@@ -327,8 +330,6 @@ public class LogIn {
 		
 	}
 	public void printExceptMsg(){}
-
-	public void resetCount(){}
 
 	public void sendMail(){}
 	public void listUpdate(){}
